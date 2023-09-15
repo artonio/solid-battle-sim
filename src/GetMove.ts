@@ -2,6 +2,9 @@ import {MoveItem} from "./App";
 
 
 export async function getMove(id: string) {
+    if (id === "") {
+        return null;
+    }
     const response = await fetch(
         // https://pokeapi.co/api/v2/move/52/
         `https://pokeapi.co/api/v2/move/${id}`
