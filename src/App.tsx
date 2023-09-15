@@ -65,44 +65,63 @@ function App() {
         console.log(e);
   }
 
-const [selected, setSelected] = createSignal("red");
-
-
+    const [selectedLeft, setSelectedLeft] = createSignal("https://pokeapi.co/api/v2/pokemon/1/");
+    const [selectedRight, setSelectedRight] = createSignal("https://pokeapi.co/api/v2/pokemon/1/");
 
     return (
-    <div class={styles.App}>
-      {/*<Show when={!data.loading} fallback={<>Catching Pokemon...</>}>*/}
-      {/*  {JSON.stringify(data())}*/}
-      {/*</Show>*/}
-        {
-            dataPokemon.loading ? <p>Loading...</p> :
-            dataPokemon.error ? <p>Error: {dataPokemon.error.message}</p> :
-            dataPokemon() ? <p>{dataPokemon()?.hp}</p> : null
-        }
-        <div>
-            {dataMove()?.name}
-        </div>
+        <div class={styles.App}>
+            <div class={styles.mainCenter}>
+                <div class={styles.left}>
+                    <select
+                        data-te-select-init
+                        data-te-select-filter="true"
+                        value={selectedLeft()}
+                        onChange={e => setSelectedLeft(e.currentTarget.value)}
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    >
+                        <For each={data()}>{
+                            item => <option value={item.url}>{item.name}</option>
+                        }</For>
+                    </select>
+                    <div>{selectedLeft()}</div>
+                </div>
+                <div class={styles.right}>
+                    <select
+                        data-te-select-init
+                        data-te-select-filter="true"
+                        value={selectedRight()}
+                        onChange={e => setSelectedRight(e.currentTarget.value)}
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    >
+                        <For each={data()}>{
+                            item => <option value={item.url}>{item.name}</option>
+                        }</For>
+                    </select>
+                    <div>{selectedRight()}</div>
+                </div>
+            </div>
+          {/*<Show when={!data.loading} fallback={<>Catching Pokemon...</>}>*/}
+          {/*  {JSON.stringify(data())}*/}
+          {/*</Show>*/}
+          {/*  {*/}
+          {/*      dataPokemon.loading ? <p>Loading...</p> :*/}
+          {/*      dataPokemon.error ? <p>Error: {dataPokemon.error.message}</p> :*/}
+          {/*      dataPokemon() ? <p>{dataPokemon()?.hp}</p> : null*/}
+          {/*  }*/}
+          {/*  <div>*/}
+          {/*      {dataMove()?.name}*/}
+          {/*  </div>*/}
 
-        <button  type="button"
-                 class="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
-                  onClick={onBtnClick}>Catch Bulbasaur</button>
-        <button onClick={() => refetch()}>Refetch</button>
-        <div style={{width: '100px'}}>
-            <select
-                data-te-select-init
-                data-te-select-filter="true"
-                value={selected()}
-                onChange={e => setSelected(e.currentTarget.value)}
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            >
-                <For each={Object.keys(options)}>{
-                    color => <option value={color}>{color}</option>
-                }</For>
-            </select>
-            <div>{selected()}</div>
-        </div>
+          {/*  <button  type="button"*/}
+          {/*           class="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"*/}
+          {/*            onClick={onBtnClick}>Catch Bulbasaur</button>*/}
+          {/*  <button onClick={() => refetch()}>Refetch</button>*/}
+          {/*  */}
+          {/*  <div style={{width: '100px'}}>*/}
 
-    </div>
+          {/*  </div>*/}
+
+        </div>
   );
 }
 
