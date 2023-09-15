@@ -25,7 +25,7 @@ export type PokemonItem = {
 }
 
 export type MoveItem = {
-    moveName: string, // name of the move
+    name: string, // name of the move
     power: number, // power of the attack
 }
 
@@ -35,21 +35,37 @@ function App() {
   const [allPokemon, setAllPokemon] = createSignal([]);
   const [data] = createResource(allPokemon, getAllPokemon);
   // get a specific pokemon
-  const [bulbasaur, setBulbasaur] = createSignal({});
-  const [dataBulbasaur] = createResource(bulbasaur, getPokemon);
-  // function to select/catch a pokemon
-  const caughtBalbasaur = () => getPokemon('bulbasaur');
-  // get a move
-  const [move, setMove] = createSignal({});
-  const [dataMove] = createResource(move, getMove);
-  // function to select a move
-  const getMoveFunc = () => getMove('razor-wind');
 
-  return (
+  const [pokemon, setPokemon] = createSignal('pikachu');
+
+  const [dataPokemon] = createResource(pokemon, getPokemon);
+  // get a move
+  const [move, setMove] = createSignal('52');
+  const [dataMove] = createResource(move, getMove);
+
+  const onBtnClick = () => {
+      setPokemon('bulbasaur');
+  }
+
+
+
+    return (
     <div class={styles.App}>
-      <Show when={!data.loading} fallback={<>Catching Pokemon...</>}>
-        {JSON.stringify(data())}
-      </Show>
+      {/*<Show when={!data.loading} fallback={<>Catching Pokemon...</>}>*/}
+      {/*  {JSON.stringify(data())}*/}
+      {/*</Show>*/}
+        {
+            dataPokemon.loading ? <p>Loading...</p> :
+            dataPokemon.error ? <p>Error: {dataPokemon.error.message}</p> :
+                // @ts-ignore
+                dataPokemon() ? <p>{dataPokemon().hp}</p> : null
+        }
+        <div>
+            {dataMove()?.name}
+        </div>
+
+        <button onClick={onBtnClick}>Catch Bulbasaur</button>
+
     </div>
   );
 }

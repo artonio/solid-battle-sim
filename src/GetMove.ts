@@ -8,7 +8,7 @@ export async function getMove(id: string) {
     );
     const result = await response.json();
     const ret: MoveItem = {
-        moveName: result.name,
+        name: result.name,
         power: result.power
     }
 
