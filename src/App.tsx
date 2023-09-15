@@ -4,6 +4,7 @@ import {createResource, createSignal, Show} from "solid-js";
 import {getAllPokemon} from "./GetAllPokemon";
 import {getPokemon} from "./GetPokemon";
 import {getMove} from "./GetMove";
+import {Select} from "./components/Select";
 
 // Result from get all Pokemon
 export type ResultItem = {
@@ -30,23 +31,24 @@ export type MoveItem = {
 }
 
 function App() {
-
   // get all pokemon
   const [allPokemon, setAllPokemon] = createSignal([]);
   const [data] = createResource(allPokemon, getAllPokemon);
   // get a specific pokemon
 
-  const [pokemon, setPokemon] = createSignal('pikachu');
+  const [pokemon, setPokemon] = createSignal('');
 
-  const [dataPokemon] = createResource(pokemon, getPokemon);
+  const [dataPokemon, {refetch}] = createResource(pokemon, getPokemon);
   // get a move
-  const [move, setMove] = createSignal('52');
+  const [move, setMove] = createSignal('');
   const [dataMove] = createResource(move, getMove);
 
   const onBtnClick = () => {
       setPokemon('bulbasaur');
   }
 
+    const options = ['Apple', 'Orange', 'Banana', 'Mango', 'Pear'];
+    const [text, setText] = createSignal("");
 
 
     return (
@@ -57,14 +59,16 @@ function App() {
         {
             dataPokemon.loading ? <p>Loading...</p> :
             dataPokemon.error ? <p>Error: {dataPokemon.error.message}</p> :
-                // @ts-ignore
-                dataPokemon() ? <p>{dataPokemon().hp}</p> : null
+            dataPokemon() ? <p>{dataPokemon()?.hp}</p> : null
         }
         <div>
             {dataMove()?.name}
         </div>
 
         <button onClick={onBtnClick}>Catch Bulbasaur</button>
+        <button onClick={() => refetch()}>Refetch</button>
+        <Select text={text} setText={setText} options={options} />
+
 
     </div>
   );

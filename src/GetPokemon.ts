@@ -1,7 +1,7 @@
 import {PokemonItem} from "./App";
 
 export async function getPokemon(query: string) {
-    if (query === "") {
+    if (!query) {
         return null;
     }
     const response = await fetch(
