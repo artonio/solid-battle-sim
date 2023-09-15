@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import styles from './App.module.css';
-import {createResource, createSignal, onMount, Show} from "solid-js";
+import {createResource, createSignal, For, onMount, Show} from "solid-js";
 import {getAllPokemon} from "./GetAllPokemon";
 import {getPokemon} from "./GetPokemon";
 import {getMove} from "./GetMove";
@@ -31,6 +31,16 @@ export type MoveItem = {
     power: number, // power of the attack
 }
 
+const RedThing = () => <strong style="color: red">Red Thing</strong>;
+const GreenThing = () => <strong style="color: green">Green Thing</strong>;
+const BlueThing = () => <strong style="color: blue">Blue Thing</strong>;
+
+const options = {
+    red: RedThing,
+    green: GreenThing,
+    blue: BlueThing
+}
+
 function App() {
     onMount(() => {
         initTE({ Select });
@@ -51,8 +61,12 @@ function App() {
       setPokemon('bulbasaur');
   }
 
-    const options = ['Apple', 'Orange', 'Banana', 'Mango', 'Pear'];
-    const [text, setText] = createSignal("");
+  const onOptionClick = (e: any) => {
+        console.log(e);
+  }
+
+const [selected, setSelected] = createSignal("red");
+
 
 
     return (
@@ -72,19 +86,12 @@ function App() {
         <button onClick={onBtnClick}>Catch Bulbasaur</button>
         <button onClick={() => refetch()}>Refetch</button>
 
-        <select data-te-select-init data-te-select-filter="true">
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-            <option value="4">Four</option>
-            <option value="5">Five</option>
-            <option value="6">Six</option>
-            <option value="7">Seven</option>
-            <option value="8">Eight</option>
-            <option value="9">Nine</option>
-            <option value="10">Ten</option>
+        <select data-te-select-init data-te-select-filter="true" value={selected()} onChange={e => setSelected(e.currentTarget.value)}>
+            <For each={Object.keys(options)}>{
+                color => <option value={color}>{color}</option>
+            }</For>
         </select>
-
+        <div>{selected()}</div>
     </div>
   );
 }
