@@ -23,6 +23,10 @@
   color: #b318f0;
 }
 
+.autocomplete {
+  margin-top: 20px;
+}
+
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);

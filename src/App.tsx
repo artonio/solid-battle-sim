@@ -67,7 +67,10 @@ function App() {
 
         <button onClick={onBtnClick}>Catch Bulbasaur</button>
         <button onClick={() => refetch()}>Refetch</button>
-        <Select text={text} setText={setText} options={options} />
+        <div class={styles.autocomplete}>
+            <Select text={text} setText={setText} options={options} />
+        </div>
+
 
 
     </div>

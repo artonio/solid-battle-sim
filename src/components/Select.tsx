@@ -32,6 +32,12 @@ export const Select: Component<{
         };
     }
 
+    const onItemClicked = (index: number) => {
+        console.log('onItemClicked', index);
+        setSelected(index);
+        props.setText(filteredOptions()[index]);
+    }
+
     return (
         <div>
             <input
@@ -42,10 +48,10 @@ export const Select: Component<{
                 onFocus={() => setShow(true)}
                 onBlur={() => setShow(false)}
             />
-            <Show when={isVisible()}>
+            <Show when={true}>
                 <ul style={`display: block; width: 100%; list-style: none; margin: 0; padding: 0`}>
                     <For each={filteredOptions()}>
-                        {(item, i) => <li style={{ color: selected() === i() ? 'red': 'inherit'}}>{item}</li>}
+                        {(item, i) => <li style={{ color: selected() === i() ? 'red': 'inherit'}} onClick={() => onItemClicked(i())}>{item}</li>}
                     </For>
                 </ul>
             </Show>
