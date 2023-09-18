@@ -1,6 +1,24 @@
 .App {
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
+
+.mainCenter {
+  max-width: 1000px;
+  min-width: 800px;
+  display: flex;
+}
+
+.left {
+
+}
+
+.right {
+    margin-left: auto;
+}
+
 
 .logo {
   animation: logo-spin infinite 20s linear;
@@ -21,6 +39,10 @@
 
 .link {
   color: #b318f0;
+}
+
+.autocomplete {
+  margin-top: 20px;
 }
 
 @keyframes logo-spin {
