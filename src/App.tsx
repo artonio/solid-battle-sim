@@ -1,10 +1,11 @@
 import styles from './App.module.css';
-import {createResource, createSignal, Show} from "solid-js";
+import {createResource, createSignal, onMount, Show} from "solid-js";
 import {getAllPokemon} from "./GetAllPokemon";
 import {getPokemon} from "./GetPokemon";
 import {getMove} from "./GetMove";
 import {PokemonCard} from "./PokemonCard";
 import {PokemonSelect} from "./PokemonSelect";
+import {initTE, Select} from "tw-elements";
 
 
 // Result from get all Pokemon
