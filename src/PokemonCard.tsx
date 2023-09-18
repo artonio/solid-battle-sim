@@ -2,10 +2,14 @@ import {PokemonItem} from "./App";
 import {createSignal, For, onMount} from "solid-js";
 import {initTE, Select} from "tw-elements";
 import {destructure} from "@solid-primitives/destructure";
+import { v4 as uuidv4 } from 'uuid';
 
 export const PokemonCard = (props: PokemonItem) => {
+
+    const [id] = createSignal(uuidv4());
+
     onMount(() => {
-        const select = new Select(document.getElementById('move'));
+        const select = new Select(document.getElementById(id()));
     });
     const {
         sprite,
@@ -40,7 +44,7 @@ export const PokemonCard = (props: PokemonItem) => {
             </div>
             <div class="p-3 relative top-[10px]">
                 <select
-                    id="move"
+                    id={id()}
                     data-te-select-init
                     data-te-select-filter="true"
                     value={selectedMove()}
