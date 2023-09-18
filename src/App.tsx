@@ -40,27 +40,15 @@ function App() {
   const [data] = createResource(allPokemon, getAllPokemon);
   // get a specific pokemon
 
-  const [pokemon, setPokemon] = createSignal('');
-
     const [selectedLeft, setSelectedLeft] = createSignal("");
     const [selectedRight, setSelectedRight] = createSignal("");
 
-    const [leftPokemon, setLeftPokemon] = createResource(selectedLeft, getPokemon);
-    const [rightPokemon, setRightPokemon] = createResource(selectedRight, getPokemon);
+    const [leftPokemon] = createResource(selectedLeft, getPokemon);
+    const [rightPokemon] = createResource(selectedRight, getPokemon);
 
   // get a move
   const [move, setMove] = createSignal('');
   const [dataMove] = createResource(move, getMove);
-
-  const onBtnClick = () => {
-      setPokemon('bulbasaur');
-  }
-
-  const onOptionClick = (e: any) => {
-        console.log(e);
-  }
-
-
 
     return (
         <div class={styles.App}>
@@ -135,27 +123,6 @@ function App() {
                     </Show>
                 </div>
             </div>
-          {/*<Show when={!data.loading} fallback={<>Catching Pokemon...</>}>*/}
-          {/*  {JSON.stringify(data())}*/}
-          {/*</Show>*/}
-          {/*  {*/}
-          {/*      dataPokemon.loading ? <p>Loading...</p> :*/}
-          {/*      dataPokemon.error ? <p>Error: {dataPokemon.error.message}</p> :*/}
-          {/*      dataPokemon() ? <p>{dataPokemon()?.hp}</p> : null*/}
-          {/*  }*/}
-          {/*  <div>*/}
-          {/*      {dataMove()?.name}*/}
-          {/*  </div>*/}
-
-          {/*  <button  type="button"*/}
-          {/*           class="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"*/}
-          {/*            onClick={onBtnClick}>Catch Bulbasaur</button>*/}
-          {/*  <button onClick={() => refetch()}>Refetch</button>*/}
-          {/*  */}
-          {/*  <div style={{width: '100px'}}>*/}
-
-          {/*  </div>*/}
-
         </div>
   );
 }
