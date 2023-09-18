@@ -1,45 +1,53 @@
 import {PokemonItem} from "./App";
 
+interface StatObj {
+    stat: {
+        name: 'hp' | 'attack' | 'speed' | 'defense';
+    };
+    base_stat: number;
+}
+
+interface StatsMap {
+    hp: number;
+    attack: number;
+    speed: number;
+    defense: number;
+}
+
 export async function getPokemon(query: string) {
     if (!query) {
         return null;
     }
-    // const response = await fetch(
-    //     // https://pokeapi.co/api/v2/pokemon/5, full name or id
-    //     `https://pokeapi.co/api/v2/pokemon/${query}`
-    // );
+
     const response = await fetch(query);
     const result = await response.json();
-    let hp = 0;
-    let attack = 0;
-    let speed = 0;
-    let defense = 0;
 
-    const stats = result.stats;
-    for (let statObj of stats) {
-        if (statObj.stat.name === "hp") {
-            hp = statObj.base_stat;
-        } else if (statObj.stat.name === "attack") {
-            attack = statObj.base_stat;
-        } else if (statObj.stat.name === "speed") {
-            speed = statObj.base_stat;
-        } else if (statObj.stat.name === "defense") {
-            defense = statObj.base_stat;
+    const initialStats: StatsMap = {
+        hp: 0,
+        attack: 0,
+        speed: 0,
+        defense: 0
+    };
+
+    const statsMap = result.stats.reduce((acc: StatsMap, statObj: StatObj) => {
+        if (statObj.stat.name in acc) {
+            acc[statObj.stat.name] = statObj.base_stat;
         }
-    }
+        return acc;
+    }, initialStats);
+
     const ret: PokemonItem = {
         sprite: result.sprites.front_default,
-        hp: hp,
-        attack: attack,
-        speed: speed,
-        defense: defense,
-        move: result.moves.map((moveObj: any) => {
-            return {
-                name: moveObj.move.name,
-                url: moveObj.move.url
-            }
-        })
+        hp: statsMap.hp,
+        attack: statsMap.attack,
+        speed: statsMap.speed,
+        defense: statsMap.defense,
+        move: result.moves.map((moveObj: any) => ({
+            name: moveObj.move.name,
+            url: moveObj.move.url
+        }))
     }
+
     console.log('this pokemon: ', ret);
     return ret;
 }
