@@ -5,7 +5,6 @@ import {getPokemon} from "./GetPokemon";
 import {getMove} from "./GetMove";
 import {PokemonCard} from "./PokemonCard";
 import {PokemonSelect} from "./PokemonSelect";
-import {initTE, Select} from "tw-elements";
 
 
 // Result from get all Pokemon
