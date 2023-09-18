@@ -5,6 +5,7 @@ import {getAllPokemon} from "./GetAllPokemon";
 import {getPokemon} from "./GetPokemon";
 import {getMove} from "./GetMove";
 import { Select, initTE } from "tw-elements";
+import {PokemonCard} from "./PokemonCard";
 
 
 // Result from get all Pokemon
@@ -66,26 +67,8 @@ function App() {
                             item => <option value={item.url}>{item.name}</option>
                         }</For>
                     </select>
-                    {/*<div>{leftPokemon()?.hp}</div>*/}
                     <Show when={leftPokemon.latest} fallback={<>Loading...</>}>
-                        <div
-                            class="block max-w-[18rem] rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
-                            <div class="relative overflow-hidden bg-cover bg-no-repeat">
-                                <img
-                                    class="rounded-t-lg mx-auto"
-                                    src={leftPokemon()?.sprite}
-                                    alt="" />
-                            </div>
-                            <div class="p-6">
-                                <div class="w-full bg-neutral-200 dark:bg-neutral-600">
-                                    <div
-                                        class="bg-green-500 p-0.5 text-center text-xs font-medium leading-none text-primary-100"
-                                        style="width: 100%">
-                                        {leftPokemon()?.hp}/{leftPokemon()?.hp}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <PokemonCard {...leftPokemon()!}/>
                     </Show>
 
                 </div>
@@ -101,26 +84,8 @@ function App() {
                             item => <option value={item.url}>{item.name}</option>
                         }</For>
                     </select>
-                    {/*<div>{rightPokemon()?.hp}</div>*/}
                     <Show when={rightPokemon.latest} fallback={<>Loading...</>}>
-                        <div
-                            class="block max-w-[18rem] rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
-                            <div class="relative overflow-hidden bg-cover bg-no-repeat">
-                                <img
-                                    class="rounded-t-lg mx-auto"
-                                    src={rightPokemon()?.sprite}
-                                    alt="" />
-                            </div>
-                            <div class="p-6">
-                                <div class="w-full bg-neutral-200 dark:bg-neutral-600">
-                                    <div
-                                        class="bg-green-500 p-0.5 text-center text-xs font-medium leading-none text-primary-100"
-                                        style="width: 100%">
-                                        {rightPokemon()?.hp}/{rightPokemon()?.hp}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <PokemonCard {...rightPokemon()!}/>
                     </Show>
                 </div>
             </div>
