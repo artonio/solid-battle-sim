@@ -6,6 +6,7 @@ import {getPokemon} from "./GetPokemon";
 import {getMove} from "./GetMove";
 import { Select, initTE } from "tw-elements";
 import {PokemonCard} from "./PokemonCard";
+import {PokemonSelect} from "./PokemonSelect";
 
 
 // Result from get all Pokemon
@@ -56,34 +57,14 @@ function App() {
         <div class={styles.App}>
             <div class={styles.mainCenter}>
                 <div class={styles.left}>
-                    <select
-                        data-te-select-init
-                        data-te-select-filter="true"
-                        value={selectedLeft()}
-                        onChange={e => setSelectedLeft(e.currentTarget.value)}
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    >
-                        <For each={data()}>{
-                            item => <option value={item.url}>{item.name}</option>
-                        }</For>
-                    </select>
+                    <PokemonSelect data={data} signal={selectedLeft} signalSetter={setSelectedLeft}/>
                     <Show when={leftPokemon.latest} fallback={<>Loading...</>}>
                         <PokemonCard {...leftPokemon()!}/>
                     </Show>
 
                 </div>
                 <div class={styles.right}>
-                    <select
-                        data-te-select-init
-                        data-te-select-filter="true"
-                        value={selectedRight()}
-                        onChange={e => setSelectedRight(e.currentTarget.value)}
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    >
-                        <For each={data()}>{
-                            item => <option value={item.url}>{item.name}</option>
-                        }</For>
-                    </select>
+                    <PokemonSelect data={data} signal={selectedRight} signalSetter={setSelectedRight}/>
                     <Show when={rightPokemon.latest} fallback={<>Loading...</>}>
                         <PokemonCard {...rightPokemon()!}/>
                     </Show>
