@@ -4,10 +4,11 @@ export async function getPokemon(query: string) {
     if (!query) {
         return null;
     }
-    const response = await fetch(
-        // https://pokeapi.co/api/v2/pokemon/5, full name or id
-        `https://pokeapi.co/api/v2/pokemon/${query}`
-    );
+    // const response = await fetch(
+    //     // https://pokeapi.co/api/v2/pokemon/5, full name or id
+    //     `https://pokeapi.co/api/v2/pokemon/${query}`
+    // );
+    const response = await fetch(query);
     const result = await response.json();
     let hp = 0;
     let attack = 0;

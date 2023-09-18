@@ -31,16 +31,6 @@ export type MoveItem = {
     power: number, // power of the attack
 }
 
-const RedThing = () => <strong style="color: red">Red Thing</strong>;
-const GreenThing = () => <strong style="color: green">Green Thing</strong>;
-const BlueThing = () => <strong style="color: blue">Blue Thing</strong>;
-
-const options = {
-    red: RedThing,
-    green: GreenThing,
-    blue: BlueThing
-}
-
 function App() {
     onMount(() => {
         initTE({ Select });
@@ -52,7 +42,12 @@ function App() {
 
   const [pokemon, setPokemon] = createSignal('');
 
-  const [dataPokemon, {refetch}] = createResource(pokemon, getPokemon);
+    const [selectedLeft, setSelectedLeft] = createSignal("");
+    const [selectedRight, setSelectedRight] = createSignal("");
+
+    const [leftPokemon, setLeftPokemon] = createResource(selectedLeft, getPokemon);
+    const [rightPokemon, setRightPokemon] = createResource(selectedRight, getPokemon);
+
   // get a move
   const [move, setMove] = createSignal('');
   const [dataMove] = createResource(move, getMove);
@@ -65,8 +60,7 @@ function App() {
         console.log(e);
   }
 
-    const [selectedLeft, setSelectedLeft] = createSignal("https://pokeapi.co/api/v2/pokemon/1/");
-    const [selectedRight, setSelectedRight] = createSignal("https://pokeapi.co/api/v2/pokemon/1/");
+
 
     return (
         <div class={styles.App}>
@@ -83,7 +77,28 @@ function App() {
                             item => <option value={item.url}>{item.name}</option>
                         }</For>
                     </select>
-                    <div>{selectedLeft()}</div>
+                    {/*<div>{leftPokemon()?.hp}</div>*/}
+                    <Show when={leftPokemon.latest} fallback={<>Loading...</>}>
+                        <div
+                            class="block max-w-[18rem] rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
+                            <div class="relative overflow-hidden bg-cover bg-no-repeat">
+                                <img
+                                    class="rounded-t-lg"
+                                    src={leftPokemon()?.sprite}
+                                    alt="" />
+                            </div>
+                            <div class="p-6">
+                                <div class="w-full bg-neutral-200 dark:bg-neutral-600">
+                                    <div
+                                        class="bg-green-500 p-0.5 text-center text-xs font-medium leading-none text-primary-100"
+                                        style="width: 100%">
+                                        {leftPokemon()?.hp}/{leftPokemon()?.hp}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </Show>
+
                 </div>
                 <div class={styles.right}>
                     <select
@@ -97,7 +112,27 @@ function App() {
                             item => <option value={item.url}>{item.name}</option>
                         }</For>
                     </select>
-                    <div>{selectedRight()}</div>
+                    {/*<div>{rightPokemon()?.hp}</div>*/}
+                    <Show when={rightPokemon.latest} fallback={<>Loading...</>}>
+                        <div
+                            class="block max-w-[18rem] rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
+                            <div class="relative overflow-hidden bg-cover bg-no-repeat">
+                                <img
+                                    class="rounded-t-lg"
+                                    src={rightPokemon()?.sprite}
+                                    alt="" />
+                            </div>
+                            <div class="p-6">
+                                <div class="w-full bg-neutral-200 dark:bg-neutral-600">
+                                    <div
+                                        class="bg-green-500 p-0.5 text-center text-xs font-medium leading-none text-primary-100"
+                                        style="width: 100%">
+                                        {rightPokemon()?.hp}/{rightPokemon()?.hp}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </Show>
                 </div>
             </div>
           {/*<Show when={!data.loading} fallback={<>Catching Pokemon...</>}>*/}
