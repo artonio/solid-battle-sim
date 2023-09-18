@@ -29,7 +29,7 @@ export async function getPokemon(query: string) {
         defense: 0
     };
 
-    const statsMap = result.stats.reduce((acc: StatsMap, statObj: StatObj) => {
+    const statsMap: StatsMap = result.stats.reduce((acc: StatsMap, statObj: StatObj) => {
         if (statObj.stat.name in acc) {
             acc[statObj.stat.name] = statObj.base_stat;
         }
