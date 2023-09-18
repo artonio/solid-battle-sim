@@ -13,6 +13,7 @@ export async function getPokemon(query: string) {
     let hp = 0;
     let attack = 0;
     let speed = 0;
+    let defense = 0;
 
     const stats = result.stats;
     for (let statObj of stats) {
@@ -22,6 +23,8 @@ export async function getPokemon(query: string) {
             attack = statObj.base_stat;
         } else if (statObj.stat.name === "speed") {
             speed = statObj.base_stat;
+        } else if (statObj.stat.name === "defense") {
+            defense = statObj.base_stat;
         }
     }
     const ret: PokemonItem = {
@@ -29,6 +32,7 @@ export async function getPokemon(query: string) {
         hp: hp,
         attack: attack,
         speed: speed,
+        defense: defense,
         move: result.moves.map((moveObj: any) => {
             return {
                 name: moveObj.move.name,
