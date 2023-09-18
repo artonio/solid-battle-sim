@@ -30,6 +30,10 @@ export async function getPokemon(query: string) {
         defense: 0
     };
 
+    // Use reduce to iterate over the stats array.
+    // For each stat object, check if the stat name exists in our accumulator object (acc).
+    // If it does, set the corresponding property in acc to the base_stat of the current statObj.
+    // Finally, return the updated accumulator.
     const statsMap: StatsMap = stats.reduce((acc: StatsMap, statObj: StatObj) => {
         if (statObj.stat.name in acc) {
             acc[statObj.stat.name] = statObj.base_stat;
