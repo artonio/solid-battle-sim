@@ -1,10 +1,8 @@
-import logo from './logo.svg';
 import styles from './App.module.css';
-import {createResource, createSignal, For, onMount, Show} from "solid-js";
+import {createResource, createSignal, Show} from "solid-js";
 import {getAllPokemon} from "./GetAllPokemon";
 import {getPokemon} from "./GetPokemon";
 import {getMove} from "./GetMove";
-import { Select, initTE } from "tw-elements";
 import {PokemonCard} from "./PokemonCard";
 import {PokemonSelect} from "./PokemonSelect";
 
@@ -35,9 +33,6 @@ export type MoveItem = {
 }
 
 function App() {
-    onMount(() => {
-        initTE({ Select });
-    });
   // get all pokemon
   const [allPokemon, setAllPokemon] = createSignal([]);
   const [data] = createResource(allPokemon, getAllPokemon);
