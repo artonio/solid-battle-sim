@@ -1,5 +1,5 @@
 import {MoveItem, PokemonItem} from "./App";
-import {createSignal, onMount} from "solid-js";
+import {createEffect, createSignal, onMount} from "solid-js";
 import {destructure} from "@solid-primitives/destructure";
 
 export type BattleProps = {
@@ -24,11 +24,17 @@ export const BattleTimeline = (props: BattleProps) => {
     } = destructure(props)
 
     // current HP
-    const [currentHP1, setCurrentHP1] = createSignal(props.pokemon1.hp);
-    const [currentHP2, setCurrentHP2] = createSignal(props.pokemon2.hp);
+    const [currentHP1, setCurrentHP1] = createSignal(pokemon1().hp);
+    const [currentHP2, setCurrentHP2] = createSignal(pokemon2().hp);
     // init cumulative HP
     let pokemon1CumulativeSpeed = 0;
     let pokemon2CumulativeHP = 0;
+
+    // reset whenever pokemon changes
+    createEffect(() => {
+        setCurrentHP1(pokemon1().hp)
+        setCurrentHP2(pokemon2().hp)
+    })
 
     // each round uses the speed stat to "charge" the attack, so the pokemon can perform the attack
     // once the attack is done the speed stat is exhausted and the pokemon must wait until it is charged again
