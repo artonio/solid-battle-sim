@@ -5,6 +5,7 @@ import {getPokemon} from "./GetPokemon";
 import {getMove} from "./GetMove";
 import {PokemonCard} from "./PokemonCard";
 import {PokemonSelect} from "./PokemonSelect";
+import {BattleTimeline} from "./BattleTimeline";
 
 
 // Result from get all Pokemon
@@ -20,6 +21,7 @@ export type Move = {
 
 export type PokemonItem = {
     sprite: string, // default sprite of pokemon
+    name: string, // name of pokemon
     hp: number, // hp of pokemon
     attack: number, // attack of pokemon
     defense: number, // defense of pokemon
@@ -32,21 +34,30 @@ export type MoveItem = {
     power: number, // power of the attack
 }
 
+export type BattleItem = {
+    pokemon1: PokemonItem, // pokemon left
+    pokemon2: PokemonItem, // pokemon right
+
+}
+
 function App() {
   // get all pokemon
   const [allPokemon, setAllPokemon] = createSignal([]);
   const [data] = createResource(allPokemon, getAllPokemon);
+
   // get a specific pokemon
+  const [selectedLeft, setSelectedLeft] = createSignal("");
+  const [selectedRight, setSelectedRight] = createSignal("");
 
-    const [selectedLeft, setSelectedLeft] = createSignal("");
-    const [selectedRight, setSelectedRight] = createSignal("");
-
-    const [leftPokemon] = createResource(selectedLeft, getPokemon);
-    const [rightPokemon] = createResource(selectedRight, getPokemon);
+  const [leftPokemon] = createResource(selectedLeft, getPokemon);
+  const [rightPokemon] = createResource(selectedRight, getPokemon);
 
   // get a move
   const [move, setMove] = createSignal('');
   const [dataMove] = createResource(move, getMove);
+
+  const [selectedMoveLeft, setSelectedMoveLeft] = createSignal("");
+  const [selectedMoveRight, setSelectedMoveRight] = createSignal("");
 
     return (
         <div class={styles.App}>
@@ -64,6 +75,11 @@ function App() {
                         <PokemonCard {...rightPokemon()!}/>
                     </Show>
                 </div>
+            </div>
+            <div>
+                <Show when={leftPokemon.latest && rightPokemon.latest} fallback={<>Select Pokemon to battle...</>}>
+                    <BattleTimeline pokemon1={leftPokemon()!} pokemon2={rightPokemon()!} />
+                </Show>
             </div>
         </div>
   );

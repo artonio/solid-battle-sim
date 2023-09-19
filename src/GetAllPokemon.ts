@@ -6,6 +6,6 @@ export async function getAllPokemon() {
     );
     const results = await response.json();
     const ret = results.results as ResultItem[];
-    console.log('all pokemon ', ret);
+    // console.log('all pokemon ', ret);
     return ret;
 }

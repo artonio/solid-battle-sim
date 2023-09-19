@@ -13,6 +13,7 @@ export const PokemonCard = (props: PokemonItem) => {
     });
     const {
         sprite,
+        name,
         hp,
         attack,
         defense,
