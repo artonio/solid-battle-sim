@@ -2,7 +2,7 @@ import {PokemonItem} from "./App";
 
 interface StatObj {
     stat: {
-        keyName: 'hp' | 'attack' | 'speed' | 'defense' | 'name';
+        name: 'hp' | 'attack' | 'speed' | 'defense';
     };
     base_stat: number;
 }
@@ -12,7 +12,6 @@ interface StatsMap {
     attack: number;
     speed: number;
     defense: number;
-    name: string;
 }
 
 export async function getPokemon(query: string) {
@@ -28,8 +27,7 @@ export async function getPokemon(query: string) {
         hp: 0,
         attack: 0,
         speed: 0,
-        defense: 0,
-        name: ''
+        defense: 0
     };
 
     // Use reduce to iterate over the stats array.
@@ -37,10 +35,8 @@ export async function getPokemon(query: string) {
     // If it does, set the corresponding property in acc to the base_stat of the current statObj.
     // Finally, return the updated accumulator.
     const statsMap: StatsMap = stats.reduce((acc: StatsMap, statObj: StatObj) => {
-        if (statObj.stat.keyName in acc) {
-            //acc[statObj.stat.keyName] = statObj.base_stat;
-            const key = statObj.stat.keyName as keyof StatsMap;
-            acc[key] = statObj.base_stat;
+        if (statObj.stat.name in acc) {
+            acc[statObj.stat.name] = statObj.base_stat;
         }
         return acc;
     }, initialStats);
@@ -51,11 +47,11 @@ export async function getPokemon(query: string) {
         attack: statsMap.attack,
         speed: statsMap.speed,
         defense: statsMap.defense,
-        name: result.name,
         move: result.moves.map((moveObj: any) => ({
             name: moveObj.move.name,
             url: moveObj.move.url
-        }))
+        })),
+        name: result.name,
     }
 
     console.log('this pokemon: ', ret);
