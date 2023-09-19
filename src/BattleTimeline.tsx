@@ -32,7 +32,6 @@ export const BattleTimeline = ({ pokemon1, pokemon2 }: BattleProps) => {
         // Increase the cumulative speed for each Pokémon
         pokemon1CumulativeSpeed += pokemon1.hp;
         pokemon2CumulativeHP += pokemon2.hp;
-        // console.log('pokemon1CumulativeSpeed: ', pokemon1CumulativeSpeed)
         // Determine who attacks based on cumulative speed
         if (pokemon1CumulativeSpeed >= pokemon2.speed) {
             doPokemon1Attack()
@@ -44,10 +43,10 @@ export const BattleTimeline = ({ pokemon1, pokemon2 }: BattleProps) => {
         }
 
         if (currentHP1() <= 0) {
-            alert(`${pokemon1.name} fainted!`)
+            alert(`${pokemon1.name} fainted! \r${pokemon2.name} at ${currentHP2()}/${pokemon2.hp} HP`)
         }
         if (currentHP2() <= 0) {
-            alert(`${pokemon2.name} fainted!`)
+            alert(`${pokemon2.name} fainted! \r${pokemon1.name} at ${currentHP1()}/${pokemon1.hp} HP`)
         }
     }
 
@@ -61,12 +60,14 @@ export const BattleTimeline = ({ pokemon1, pokemon2 }: BattleProps) => {
         const damage = Math.round((pokemon1.attack/pokemon2.defense) * 5);
         setCurrentHP2(currentHP2() - damage);
         console.log(`${pokemon1.name} attacks ${pokemon2.name} for ${damage} damage!`)
+        console.log(`${pokemon2.name} has ${currentHP2()}/${pokemon2.hp} HP left`)
     }
 
     const doPokemon2Attack = () => {
         const damage = Math.round((pokemon2.attack/pokemon1.defense) * 5);
         setCurrentHP1(currentHP1() - damage);
         console.log(`${pokemon2.name} attacks ${pokemon1.name} for ${damage} damage!`)
+        console.log(`${pokemon1.name} has ${currentHP1()}/${pokemon1.hp} HP left`)
     }
 
     return (
