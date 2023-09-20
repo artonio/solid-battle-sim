@@ -1,26 +1,27 @@
 import {MoveItem, PokemonItem} from "./App";
-import {createEffect, createSignal, onMount} from "solid-js";
+import {createEffect, createResource, createSignal, onMount} from "solid-js";
 import {destructure} from "@solid-primitives/destructure";
+import {getMove} from "./GetMove";
 
 export type BattleProps = {
     pokemon1: PokemonItem,
     pokemon2: PokemonItem,
-    // move1: MoveItem,
-    // move2: MoveItem,
+    move1: string,
+    move2: string,
 }
 
 export const BattleTimeline = (props: BattleProps) => {
 
     onMount(() => {
-        // console.log('BattleTimeline props.pokemon1: ', pokemon1)
-        // console.log('BattleTimeline props.pokemon2: ', pokemon2)
-        // console.log('BattleTimeline props.pokemon1.hp: ', pokemon1.hp)
-        // console.log('BattleTimeline props.pokemon2.hp: ', pokemon2.hp)
+        console.log('BattleTimeline move1: ', move1)
+        console.log('BattleTimeline move2: ', move2)
     });
 
     const {
         pokemon1,
         pokemon2,
+        move1,
+        move2
     } = destructure(props)
 
     // current HP
@@ -35,6 +36,10 @@ export const BattleTimeline = (props: BattleProps) => {
         setCurrentHP1(pokemon1().hp)
         setCurrentHP2(pokemon2().hp)
     })
+
+    // move data
+    const [move1Data] = createResource(move1, getMove);
+    const [move2Data] = createResource(move2, getMove);
 
     // each round uses the speed stat to "charge" the attack, so the pokemon can perform the attack
     // once the attack is done the speed stat is exhausted and the pokemon must wait until it is charged again
@@ -61,7 +66,7 @@ export const BattleTimeline = (props: BattleProps) => {
     }
 
     const doBattle = () => {
-        console.log('doBattle', currentHP1(), currentHP2())
+        console.log('doBattle', currentHP1(), currentHP2(), move1Data()!.power, move2Data()!.power)
         while (currentHP1() > 0 && currentHP2() > 0) {
             doRound()
         }

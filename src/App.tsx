@@ -34,12 +34,6 @@ export type MoveItem = {
     power: number, // power of the attack
 }
 
-export type BattleItem = {
-    pokemon1: PokemonItem, // pokemon left
-    pokemon2: PokemonItem, // pokemon right
-
-}
-
 function App() {
   // get all pokemon
   const [allPokemon, setAllPokemon] = createSignal([]);
@@ -53,8 +47,8 @@ function App() {
   const [rightPokemon] = createResource(selectedRight, getPokemon);
 
   // get a move
-  const [move, setMove] = createSignal('');
-  const [dataMove] = createResource(move, getMove);
+  // const [move, setMove] = createSignal('');
+  // const [dataMove] = createResource(move, getMove);
 
   const [selectedMoveLeft, setSelectedMoveLeft] = createSignal("");
   const [selectedMoveRight, setSelectedMoveRight] = createSignal("");
@@ -65,22 +59,25 @@ function App() {
                 <div class={styles.left}>
                     <PokemonSelect data={data} signal={selectedLeft} signalSetter={setSelectedLeft}/>
                     <Show when={leftPokemon.latest} fallback={<>Loading...</>}>
-                        <PokemonCard {...leftPokemon()!}/>
+                        <PokemonCard data={leftPokemon()!} signal={selectedMoveLeft} signalSetter={setSelectedMoveLeft}/>
                     </Show>
 
                 </div>
                 <div class={styles.right}>
                     <PokemonSelect data={data} signal={selectedRight} signalSetter={setSelectedRight}/>
                     <Show when={rightPokemon.latest} fallback={<>Loading...</>}>
-                        <PokemonCard {...rightPokemon()!}/>
+                        <PokemonCard data={rightPokemon()!} signal={selectedMoveRight} signalSetter={setSelectedMoveRight}/>
                     </Show>
                 </div>
             </div>
             <div>
                 <Show when={leftPokemon.latest && rightPokemon.latest} fallback={<>Select Pokemon to battle...</>}>
-                    <BattleTimeline pokemon1={leftPokemon()!} pokemon2={rightPokemon()!} />
+                    <BattleTimeline pokemon1={leftPokemon()!} pokemon2={rightPokemon()!}
+                        move1={selectedMoveLeft()} move2={selectedMoveRight()}/>
                 </Show>
             </div>
+            selectedMoveLeft: {selectedMoveLeft()}
+            selectedMoveRight: {selectedMoveRight()}
         </div>
   );
 }
