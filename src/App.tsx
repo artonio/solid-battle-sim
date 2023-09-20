@@ -5,7 +5,7 @@ import {getPokemon} from "./GetPokemon";
 import {PokemonCard} from "./PokemonCard";
 import {PokemonSelect} from "./PokemonSelect";
 import {BattleTimeline} from "./BattleTimeline";
-import {selectedMove} from "./solid-store";
+import {selectedMove, selectedMoveObject} from "./solid-store";
 
 
 // Result from get all Pokemon
@@ -65,14 +65,16 @@ function App() {
                 <div class={styles.left}>
                     <PokemonSelect data={data} signal={selectedLeft} signalSetter={setSelectedLeft}/>
                     <Show when={leftPokemon.latest} fallback={<>Loading...</>}>
-                        <PokemonCard data={leftPokemon()!} id={selectedMove[0].id}/>
+                        {/*<PokemonCard data={leftPokemon()!} id={selectedMove[0].id}/>*/}
+                        <PokemonCard data={leftPokemon()!} id={selectedMoveObject.left.id}/>
                     </Show>
 
                 </div>
                 <div class={styles.right}>
                     <PokemonSelect data={data} signal={selectedRight} signalSetter={setSelectedRight}/>
                     <Show when={rightPokemon.latest} fallback={<>Loading...</>}>
-                        <PokemonCard data={rightPokemon()!} id={selectedMove[1].id}/>
+                        {/*<PokemonCard data={rightPokemon()!} id={selectedMove[1].id}/>*/}
+                        <PokemonCard data={rightPokemon()!} id={selectedMoveObject.right.id}/>
                     </Show>
                 </div>
             </div>
@@ -82,9 +84,9 @@ function App() {
                         move1={selectedMoveLeft()} move2={selectedMoveRight()}/>
                 </Show>
             </div>
-            selectedMoveLeft: {selectedMove[0].name}
+            selectedMoveLeft: {selectedMoveObject.left.name}
             <br></br>
-            selectedMoveRight: {selectedMove[1].name}
+            selectedMoveRight: {selectedMoveObject.right.name}
         </div>
   );
 }

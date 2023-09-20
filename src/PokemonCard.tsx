@@ -1,7 +1,13 @@
 import {findKeyById, PokemonItem} from "./App";
 import {createSignal, For, onMount} from "solid-js";
 import {Select} from "tw-elements";
-import {selectedMove, setSelectedMove} from "./solid-store";
+import {
+    findKeyInObjectBydId,
+    selectedMove,
+    selectedMoveObject,
+    setSelectedMove,
+    setSelectedMoveObject
+} from "./solid-store";
 
 export type PokemonCardProps = {
     data: PokemonItem,
@@ -11,6 +17,8 @@ export type PokemonCardProps = {
 export const PokemonCard = (props: PokemonCardProps) => {
 
     const [id] = createSignal(props.id);
+
+    const [val] = createSignal('')
 
     onMount(() => {
         const select = new Select(document.getElementById(id()));
@@ -29,6 +37,12 @@ export const PokemonCard = (props: PokemonCardProps) => {
     const onMoveChange = (e: any) => {
         console.log('onMoveChange: ', e.currentTarget.value)
         console.log('selectedMove', selectedMove)
+
+        const key = findKeyInObjectBydId(selectedMoveObject, props.id) as 'left' | 'right';
+
+        setSelectedMoveObject(key, 'name', e.currentTarget.value)
+
+        console.log('selectedMoveObject', selectedMoveObject)
 
         setSelectedMove((arg) => {
             // Cache the props.id value
@@ -75,7 +89,7 @@ export const PokemonCard = (props: PokemonCardProps) => {
                     id={id()}
                     data-te-select-init
                     data-te-select-filter="true"
-                    value={selectedMove[findKeyById(props.id)].name}
+                    value={val()}
                     onChange={onMoveChange}
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 >
