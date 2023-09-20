@@ -1,18 +1,16 @@
-import {PokemonItem} from "./App";
-import {Accessor, createSignal, For, onMount, Setter} from "solid-js";
-import {initTE, Select} from "tw-elements";
-import {destructure} from "@solid-primitives/destructure";
-import { v4 as uuidv4 } from 'uuid';
+import {findKeyById, PokemonItem} from "./App";
+import {createSignal, For, onMount} from "solid-js";
+import {Select} from "tw-elements";
+import {selectedMove, setSelectedMove} from "./solid-store";
 
 export type PokemonCardProps = {
     data: PokemonItem,
-    signal: Accessor<string>,
-    signalSetter: Setter<string>,
+    id: string,
 }
 
 export const PokemonCard = (props: PokemonCardProps) => {
 
-    const [id] = createSignal(uuidv4());
+    const [id] = createSignal(props.id);
 
     onMount(() => {
         const select = new Select(document.getElementById(id()));
@@ -27,7 +25,31 @@ export const PokemonCard = (props: PokemonCardProps) => {
     //     move
     // } = destructure(props.data);
 
-    const [signal, signalSetter] = createSignal("");
+
+    const onMoveChange = (e: any) => {
+        console.log('onMoveChange: ', e.currentTarget.value)
+        console.log('selectedMove', selectedMove)
+
+        setSelectedMove((arg) => {
+            // Cache the props.id value
+            const id = props.id;
+
+            // Find the index of the move to be selected
+            const index = findKeyById(id);
+
+            // Copy the arg array to a new array
+            const newArr = arg.slice();
+
+            // Update the selected move in the new array
+            newArr[index] = { ...newArr[index], name: e.currentTarget.value };
+
+            // Return the new array
+            return newArr;
+        })
+
+        console.log('selectedMove', selectedMove)
+        // props.signalSetter(e.currentTarget!.value)
+    }
 
     return (
         <div
@@ -53,8 +75,8 @@ export const PokemonCard = (props: PokemonCardProps) => {
                     id={id()}
                     data-te-select-init
                     data-te-select-filter="true"
-                    value={signal()}
-                    onChange={e => props.signalSetter(e.currentTarget.value)}
+                    value={selectedMove[findKeyById(props.id)].name}
+                    onChange={onMoveChange}
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 >
                     <For each={props.data.move}>{

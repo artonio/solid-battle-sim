@@ -1,11 +1,11 @@
 import styles from './App.module.css';
-import {createResource, createSignal, onMount, Show} from "solid-js";
+import {createResource, createSignal, Show} from "solid-js";
 import {getAllPokemon} from "./GetAllPokemon";
 import {getPokemon} from "./GetPokemon";
-import {getMove} from "./GetMove";
 import {PokemonCard} from "./PokemonCard";
 import {PokemonSelect} from "./PokemonSelect";
 import {BattleTimeline} from "./BattleTimeline";
+import {selectedMove} from "./solid-store";
 
 
 // Result from get all Pokemon
@@ -34,7 +34,13 @@ export type MoveItem = {
     power: number, // power of the attack
 }
 
+
+export const findKeyById = (id: string) => {
+    return selectedMove.findIndex((item: { id: string; }) => item.id === id)
+}
+
 function App() {
+
   // get all pokemon
   const [allPokemon, setAllPokemon] = createSignal([]);
   const [data] = createResource(allPokemon, getAllPokemon);
@@ -59,14 +65,14 @@ function App() {
                 <div class={styles.left}>
                     <PokemonSelect data={data} signal={selectedLeft} signalSetter={setSelectedLeft}/>
                     <Show when={leftPokemon.latest} fallback={<>Loading...</>}>
-                        <PokemonCard data={leftPokemon()!} signal={selectedMoveLeft} signalSetter={setSelectedMoveLeft}/>
+                        <PokemonCard data={leftPokemon()!} id={selectedMove[0].id}/>
                     </Show>
 
                 </div>
                 <div class={styles.right}>
                     <PokemonSelect data={data} signal={selectedRight} signalSetter={setSelectedRight}/>
                     <Show when={rightPokemon.latest} fallback={<>Loading...</>}>
-                        <PokemonCard data={rightPokemon()!} signal={selectedMoveRight} signalSetter={setSelectedMoveRight}/>
+                        <PokemonCard data={rightPokemon()!} id={selectedMove[1].id}/>
                     </Show>
                 </div>
             </div>
@@ -76,8 +82,9 @@ function App() {
                         move1={selectedMoveLeft()} move2={selectedMoveRight()}/>
                 </Show>
             </div>
-            selectedMoveLeft: {selectedMoveLeft()}
-            selectedMoveRight: {selectedMoveRight()}
+            selectedMoveLeft: {selectedMove[0].name}
+            <br></br>
+            selectedMoveRight: {selectedMove[1].name}
         </div>
   );
 }
