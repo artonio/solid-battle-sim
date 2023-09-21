@@ -21,15 +21,7 @@ export const PokemonCard = (props: PokemonCardProps) => {
     onMount(() => {
         const select = new Select(document.getElementById(id()));
     });
-    // const {
-    //     sprite,
-    //     name,
-    //     hp,
-    //     attack,
-    //     defense,
-    //     speed,
-    //     move
-    // } = destructure(props.data);
+
 
 
     const onMoveChange = (e: any) => {
@@ -40,26 +32,6 @@ export const PokemonCard = (props: PokemonCardProps) => {
         setSelectedMoveObject(key, 'url', e.currentTarget.value)
 
         console.log('selectedMoveObject', selectedMoveObject)
-
-        // setSelectedMove((arg) => {
-        //     // Cache the props.id value
-        //     const id = props.id;
-        //
-        //     // Find the index of the move to be selected
-        //     const index = findKeyById(id);
-        //
-        //     // Copy the arg array to a new array
-        //     const newArr = arg.slice();
-        //
-        //     // Update the selected move in the new array
-        //     newArr[index] = { ...newArr[index], name: e.currentTarget.value };
-        //
-        //     // Return the new array
-        //     return newArr;
-        // })
-
-        // console.log('selectedMove', selectedMove)
-        // props.signalSetter(e.currentTarget!.value)
     }
 
     return (

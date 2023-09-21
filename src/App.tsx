@@ -11,7 +11,7 @@ import {selectedMoveObject} from "./solid-store";
 // Result from get all Pokemon
 export type ResultItem = {
   name: string, // name of pokemon
-  url: string[] // url to the pokemon's info
+  url: string // url to the pokemon's info
 }
 
 export type Move = {
@@ -60,7 +60,6 @@ function App() {
                 <div class={styles.left}>
                     <PokemonSelect data={data} signal={selectedLeft} signalSetter={setSelectedLeft}/>
                     <Show when={leftPokemon.latest} fallback={<>Loading...</>}>
-                        {/*<PokemonCard data={leftPokemon()!} id={selectedMove[0].id}/>*/}
                         <PokemonCard data={leftPokemon()!} id={selectedMoveObject.left.id}/>
                     </Show>
 
@@ -68,7 +67,6 @@ function App() {
                 <div class={styles.right}>
                     <PokemonSelect data={data} signal={selectedRight} signalSetter={setSelectedRight}/>
                     <Show when={rightPokemon.latest} fallback={<>Loading...</>}>
-                        {/*<PokemonCard data={rightPokemon()!} id={selectedMove[1].id}/>*/}
                         <PokemonCard data={rightPokemon()!} id={selectedMoveObject.right.id}/>
                     </Show>
                 </div>
