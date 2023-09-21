@@ -123,7 +123,7 @@ export const BattleTimeline = (props: BattleProps) => {
                 </button>
             </div>
                 <ol
-                    class="relative border-l border-neutral-300 dark:border-neutral-500 md:flex md:justify-center md:gap-6 md:border-l-0 md:border-t w-[600px] top-[20px]">
+                    class="relative border-l border-neutral-300 dark:border-neutral-500 md:flex md:justify-center md:gap-6 md:border-l-0 md:border-t w-[900px] top-[20px]">
                     <For each={pokemon1history}>{
                         item => <li>
                             <div class="flex-start flex items-center pt-2 md:block md:pt-0">
@@ -139,7 +139,7 @@ export const BattleTimeline = (props: BattleProps) => {
 
                 </ol>
                 <ol
-                    class="relative border-l border-neutral-300 dark:border-neutral-500 md:flex md:justify-center md:gap-6 md:border-l-0 md:border-t w-[600px] top-[50px]">
+                    class="relative border-l border-neutral-300 dark:border-neutral-500 md:flex md:justify-center md:gap-6 md:border-l-0 md:border-t w-[900px] top-[50px]">
                     <For each={pokemon2history}>{
                         item => <li>
                             <div class="flex-start flex items-center pt-2 md:block md:pt-0">
