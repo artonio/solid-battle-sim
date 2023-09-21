@@ -42,7 +42,9 @@ export const BattleTimeline = (props: BattleProps) => {
 
     // each round uses the speed stat to "charge" the attack, so the pokemon can perform the attack
     // once the attack is done the speed stat is exhausted and the pokemon must wait until it is charged again
+    let i = 1;
     const doRound = () => {
+        console.log(`Round ${i}`)
         // Increase the cumulative speed for each Pokémon
         pokemon1CumulativeSpeed += pokemon1().hp;
         pokemon2CumulativeSpeed += pokemon2().hp;
@@ -62,6 +64,7 @@ export const BattleTimeline = (props: BattleProps) => {
         if (currentHP2() <= 0) {
             alert(`${pokemon2().name} fainted! \r${pokemon1().name} at ${currentHP1()}/${pokemon1().hp} HP`)
         }
+        i++;
     }
 
     const doBattle = () => {

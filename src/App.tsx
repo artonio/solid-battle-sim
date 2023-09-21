@@ -51,9 +51,6 @@ function App() {
   // const [move, setMove] = createSignal('');
   // const [dataMove] = createResource(move, getMove);
 
-  const [selectedMoveLeft, setSelectedMoveLeft] = createSignal("");
-  const [selectedMoveRight, setSelectedMoveRight] = createSignal("");
-
     return (
         <div class={styles.App}>
             <div class={styles.mainCenter}>
@@ -76,9 +73,9 @@ function App() {
                     <BattleTimeline pokemon1={leftPokemon()!} pokemon2={rightPokemon()!}/>
                 </Show>
             </div>
-            selectedMoveLeft: {selectedMoveObject.left.url}
-            <br></br>
-            selectedMoveRight: {selectedMoveObject.right.url}
+            {/*selectedMoveLeft: {selectedMoveObject.left.url}*/}
+            {/*<br></br>*/}
+            {/*selectedMoveRight: {selectedMoveObject.right.url}*/}
         </div>
   );
 }
