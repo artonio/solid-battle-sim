@@ -5,7 +5,7 @@ import {getPokemon} from "./GetPokemon";
 import {PokemonCard} from "./PokemonCard";
 import {PokemonSelect} from "./PokemonSelect";
 import {BattleTimeline} from "./BattleTimeline";
-import {selectedMove, selectedMoveObject} from "./solid-store";
+import {selectedMoveObject} from "./solid-store";
 
 
 // Result from get all Pokemon
@@ -32,11 +32,6 @@ export type PokemonItem = {
 export type MoveItem = {
     name: string, // name of the move
     power: number, // power of the attack
-}
-
-
-export const findKeyById = (id: string) => {
-    return selectedMove.findIndex((item: { id: string; }) => item.id === id)
 }
 
 function App() {
@@ -80,13 +75,12 @@ function App() {
             </div>
             <div>
                 <Show when={leftPokemon.latest && rightPokemon.latest} fallback={<>Select Pokemon to battle...</>}>
-                    <BattleTimeline pokemon1={leftPokemon()!} pokemon2={rightPokemon()!}
-                        move1={selectedMoveLeft()} move2={selectedMoveRight()}/>
+                    <BattleTimeline pokemon1={leftPokemon()!} pokemon2={rightPokemon()!}/>
                 </Show>
             </div>
-            selectedMoveLeft: {selectedMoveObject.left.name}
+            selectedMoveLeft: {selectedMoveObject.left.url}
             <br></br>
-            selectedMoveRight: {selectedMoveObject.right.name}
+            selectedMoveRight: {selectedMoveObject.right.url}
         </div>
   );
 }

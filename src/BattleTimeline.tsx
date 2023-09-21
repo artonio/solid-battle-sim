@@ -2,26 +2,22 @@ import {MoveItem, PokemonItem} from "./App";
 import {createEffect, createResource, createSignal, onMount} from "solid-js";
 import {destructure} from "@solid-primitives/destructure";
 import {getMove} from "./GetMove";
+import {selectedMoveObject} from "./solid-store";
 
 export type BattleProps = {
     pokemon1: PokemonItem,
     pokemon2: PokemonItem,
-    move1: string,
-    move2: string,
 }
 
 export const BattleTimeline = (props: BattleProps) => {
 
     onMount(() => {
-        console.log('BattleTimeline move1: ', move1)
-        console.log('BattleTimeline move2: ', move2)
+
     });
 
     const {
         pokemon1,
         pokemon2,
-        move1,
-        move2
     } = destructure(props)
 
     // current HP
@@ -38,8 +34,8 @@ export const BattleTimeline = (props: BattleProps) => {
     })
 
     // move data
-    const [move1Data] = createResource(move1, getMove);
-    const [move2Data] = createResource(move2, getMove);
+    const [move1Data] = createResource(selectedMoveObject.left.url, getMove);
+    const [move2Data] = createResource(selectedMoveObject.right.url, getMove);
 
     // each round uses the speed stat to "charge" the attack, so the pokemon can perform the attack
     // once the attack is done the speed stat is exhausted and the pokemon must wait until it is charged again
@@ -73,6 +69,8 @@ export const BattleTimeline = (props: BattleProps) => {
     }
 
     const doPokemon1Attack = () => {
+        const movePower = move1Data()!.power;
+        console.log('move 1 ', move1Data.name, movePower)
         const damage = Math.round((pokemon1().attack/pokemon2().defense) * 5);
         setCurrentHP2(currentHP2() - damage);
         console.log(`${pokemon1().name} attacks ${pokemon2().name} for ${damage} damage!`)
@@ -80,6 +78,8 @@ export const BattleTimeline = (props: BattleProps) => {
     }
 
     const doPokemon2Attack = () => {
+        const movePower = move2Data()!.power;
+        console.log('move 2 ', move2Data.name, movePower)
         const damage = Math.round((pokemon2().attack/pokemon1().defense) * 5);
         setCurrentHP1(currentHP1() - damage);
         console.log(`${pokemon2().name} attacks ${pokemon1().name} for ${damage} damage!`)

@@ -2,6 +2,7 @@ import {MoveItem} from "./App";
 
 
 export async function getMove(url: string) {
+    console.log('getMove: ', url);
     if (url === "") {
         return null;
     }

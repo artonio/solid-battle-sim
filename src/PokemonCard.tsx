@@ -1,11 +1,9 @@
-import {findKeyById, PokemonItem} from "./App";
+import {PokemonItem} from "./App";
 import {createSignal, For, onMount} from "solid-js";
 import {Select} from "tw-elements";
 import {
     findKeyInObjectBydId,
-    selectedMove,
     selectedMoveObject,
-    setSelectedMove,
     setSelectedMoveObject
 } from "./solid-store";
 
@@ -36,32 +34,31 @@ export const PokemonCard = (props: PokemonCardProps) => {
 
     const onMoveChange = (e: any) => {
         console.log('onMoveChange: ', e.currentTarget.value)
-        console.log('selectedMove', selectedMove)
 
         const key = findKeyInObjectBydId(selectedMoveObject, props.id) as 'left' | 'right';
 
-        setSelectedMoveObject(key, 'name', e.currentTarget.value)
+        setSelectedMoveObject(key, 'url', e.currentTarget.value)
 
         console.log('selectedMoveObject', selectedMoveObject)
 
-        setSelectedMove((arg) => {
-            // Cache the props.id value
-            const id = props.id;
+        // setSelectedMove((arg) => {
+        //     // Cache the props.id value
+        //     const id = props.id;
+        //
+        //     // Find the index of the move to be selected
+        //     const index = findKeyById(id);
+        //
+        //     // Copy the arg array to a new array
+        //     const newArr = arg.slice();
+        //
+        //     // Update the selected move in the new array
+        //     newArr[index] = { ...newArr[index], name: e.currentTarget.value };
+        //
+        //     // Return the new array
+        //     return newArr;
+        // })
 
-            // Find the index of the move to be selected
-            const index = findKeyById(id);
-
-            // Copy the arg array to a new array
-            const newArr = arg.slice();
-
-            // Update the selected move in the new array
-            newArr[index] = { ...newArr[index], name: e.currentTarget.value };
-
-            // Return the new array
-            return newArr;
-        })
-
-        console.log('selectedMove', selectedMove)
+        // console.log('selectedMove', selectedMove)
         // props.signalSetter(e.currentTarget!.value)
     }
 

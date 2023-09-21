@@ -1,14 +1,16 @@
 import {createStore} from "solid-js/store";
 import { v4 as uuidv4 } from 'uuid';
 
-export const [selectedMove, setSelectedMove] = createStore([
-    {id: uuidv4(), name: ""},
-    {id: uuidv4(), name: ""}
-]);
+// store with array
+// export const [selectedMove, setSelectedMove] = createStore([
+//     {id: uuidv4(), name: ""},
+//     {id: uuidv4(), name: ""}
+// ]);
 
+// store with custom object with unique keys
 export const [selectedMoveObject, setSelectedMoveObject] = createStore({
-    left: {id: uuidv4(), name: ""},
-    right: {id: uuidv4(), name: ""}
+    left: {id: uuidv4(), url: ""},
+    right: {id: uuidv4(), url: ""}
 });
 
 export const findKeyInObjectBydId = (object: any, id: any) => {
