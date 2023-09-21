@@ -47,11 +47,16 @@ export async function getPokemon(query: string) {
         attack: statsMap.attack,
         speed: statsMap.speed,
         defense: statsMap.defense,
-        move: result.moves.map((moveObj: any) => ({
-            name: moveObj.move.name,
-            url: moveObj.move.url
-        }))
+        move: result.moves.map((moveObj: any) => {
+           return {
+               name: moveObj.move.name,
+               url: moveObj.move.url
+           }
+        }),
+        name: result.name,
     }
+
+    ret.move.unshift({name: '', url: ''});
 
     console.log('this pokemon: ', ret);
     return ret;

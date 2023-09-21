@@ -1,27 +1,51 @@
 import {PokemonItem} from "./App";
-import {createSignal, For, onMount} from "solid-js";
-import {initTE, Select} from "tw-elements";
-import {destructure} from "@solid-primitives/destructure";
-import { v4 as uuidv4 } from 'uuid';
+import {createEffect, createMemo, createResource, createSignal, For, on, onMount} from "solid-js";
+import {Select} from "tw-elements";
+import {
+    findKeyInObjectById,
+    selectedMoveObject,
+    setSelectedMoveObject
+} from "./solid-store";
+import {getMove} from "./GetMove";
 
-export const PokemonCard = (props: PokemonItem) => {
+export type PokemonCardProps = {
+    data: PokemonItem,
+    id: string,
+}
 
-    const [id] = createSignal(uuidv4());
+export const PokemonCard = (props: PokemonCardProps) => {
+
+    const [id] = createSignal(props.id);
+
+    const [val] = createSignal('')
 
     onMount(() => {
         const select = new Select(document.getElementById(id()));
     });
-    const {
-        sprite,
-        hp,
-        attack,
-        defense,
-        speed,
-        move
-    } = destructure(props);
 
-    const [selectedMove, setSelectedMove] = createSignal("");
+    const [moveUrl, setMoveUrl] = createSignal('')
 
+    const [move] = createResource(moveUrl, getMove);
+
+
+    createEffect(on([move], () => {
+        if (move()) {
+            const key = findKeyInObjectById(selectedMoveObject, props.id) as 'left' | 'right';
+            setSelectedMoveObject(key, 'power', move()!.power)
+        }
+
+    }))
+
+
+    const onMoveChange = (e: any) => {
+        console.log('onMoveChange: ', e.currentTarget.value)
+
+        const key = findKeyInObjectById(selectedMoveObject, props.id) as 'left' | 'right';
+        setMoveUrl(e.currentTarget.value);
+        setSelectedMoveObject(key, 'url', e.currentTarget.value)
+
+        console.log('selectedMoveObject', selectedMoveObject)
+    }
 
     return (
         <div
@@ -30,38 +54,41 @@ export const PokemonCard = (props: PokemonItem) => {
             <div class="relative overflow-hidden bg-cover bg-no-repeat top-[10px]">
                 <img
                     class="rounded-t-lg mx-auto"
-                    src={sprite()}
+                    src={props.data.sprite}
                     alt="" />
             </div>
             <div class="relative left-[10px] top-[10px]">
-                Attack: <b>{attack()}</b>
+                Attack: <b>{props.data.attack}</b>
             </div>
             <div class="relative left-[10px] top-[10px]">
-                Defense: <b>{defense()}</b>
+                Defense: <b>{props.data.defense}</b>
             </div>
             <div class="relative left-[10px] top-[10px]">
-                Speed: <b>{speed()}</b>
+                Speed: <b>{props.data.speed}</b>
             </div>
             <div class="p-3 relative top-[10px]">
                 <select
                     id={id()}
                     data-te-select-init
                     data-te-select-filter="true"
-                    value={selectedMove()}
-                    onChange={e => setSelectedMove(e.currentTarget.value)}
+                    value={val()}
+                    onChange={onMoveChange}
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 >
-                    <For each={move()}>{
+                    <For each={props.data.move}>{
                         item => <option value={item.url}>{item.name}</option>
                     }</For>
                 </select>
+            </div>
+            <div class="relative left-[10px] top-[10px]">
+                Move Power Rating: {move.latest ? move()!.power : 0}
             </div>
             <div class="p-3">
                 <div class="w-full bg-neutral-200 dark:bg-neutral-600">
                     <div
                         class="bg-green-500 p-0.5 text-center text-xs font-medium leading-none text-primary-100"
                         style="width: 100%">
-                        {hp()}/{hp()}
+                        {props.data.hp}/{props.data.hp}
                     </div>
                 </div>
             </div>

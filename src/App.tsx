@@ -1,16 +1,17 @@
 import styles from './App.module.css';
-import {createResource, createSignal, onMount, Show} from "solid-js";
+import {createResource, createSignal, Show} from "solid-js";
 import {getAllPokemon} from "./GetAllPokemon";
 import {getPokemon} from "./GetPokemon";
-import {getMove} from "./GetMove";
 import {PokemonCard} from "./PokemonCard";
 import {PokemonSelect} from "./PokemonSelect";
+import {BattleTimeline} from "./BattleTimeline";
+import {selectedMoveObject} from "./solid-store";
 
 
 // Result from get all Pokemon
 export type ResultItem = {
   name: string, // name of pokemon
-  url: string[] // url to the pokemon's info
+  url: string // url to the pokemon's info
 }
 
 export type Move = {
@@ -20,6 +21,7 @@ export type Move = {
 
 export type PokemonItem = {
     sprite: string, // default sprite of pokemon
+    name: string, // name of pokemon
     hp: number, // hp of pokemon
     attack: number, // attack of pokemon
     defense: number, // defense of pokemon
@@ -33,20 +35,21 @@ export type MoveItem = {
 }
 
 function App() {
+
   // get all pokemon
   const [allPokemon, setAllPokemon] = createSignal([]);
   const [data] = createResource(allPokemon, getAllPokemon);
+
   // get a specific pokemon
+  const [selectedLeft, setSelectedLeft] = createSignal("");
+  const [selectedRight, setSelectedRight] = createSignal("");
 
-    const [selectedLeft, setSelectedLeft] = createSignal("");
-    const [selectedRight, setSelectedRight] = createSignal("");
-
-    const [leftPokemon] = createResource(selectedLeft, getPokemon);
-    const [rightPokemon] = createResource(selectedRight, getPokemon);
+  const [leftPokemon] = createResource(selectedLeft, getPokemon);
+  const [rightPokemon] = createResource(selectedRight, getPokemon);
 
   // get a move
-  const [move, setMove] = createSignal('');
-  const [dataMove] = createResource(move, getMove);
+  // const [move, setMove] = createSignal('');
+  // const [dataMove] = createResource(move, getMove);
 
     return (
         <div class={styles.App}>
@@ -54,17 +57,24 @@ function App() {
                 <div class={styles.left}>
                     <PokemonSelect data={data} signal={selectedLeft} signalSetter={setSelectedLeft}/>
                     <Show when={leftPokemon.latest} fallback={<>Loading...</>}>
-                        <PokemonCard {...leftPokemon()!}/>
+                        <PokemonCard data={leftPokemon()!} id={selectedMoveObject.left.id}/>
                     </Show>
 
                 </div>
                 <div class={styles.right}>
                     <PokemonSelect data={data} signal={selectedRight} signalSetter={setSelectedRight}/>
                     <Show when={rightPokemon.latest} fallback={<>Loading...</>}>
-                        <PokemonCard {...rightPokemon()!}/>
+                        <PokemonCard data={rightPokemon()!} id={selectedMoveObject.right.id}/>
                     </Show>
                 </div>
+
             </div>
+            <div>
+                <Show when={leftPokemon.latest && rightPokemon.latest} fallback={<>Select Pokemon to battle...</>}>
+                    <BattleTimeline pokemon1={leftPokemon()!} pokemon2={rightPokemon()!}/>
+                </Show>
+            </div>
+
         </div>
   );
 }
