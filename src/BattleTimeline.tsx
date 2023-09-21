@@ -1,5 +1,5 @@
 import {MoveItem, PokemonItem} from "./App";
-import {createEffect, createMemo, createResource, createSignal, onMount} from "solid-js";
+import {createEffect, createMemo, createResource, createSignal, on, onMount} from "solid-js";
 import {destructure} from "@solid-primitives/destructure";
 import {getMove} from "./GetMove";
 import {selectedMoveObject} from "./solid-store";
@@ -27,18 +27,18 @@ export const BattleTimeline = (props: BattleProps) => {
     let pokemon1CumulativeSpeed = 0;
     let pokemon2CumulativeHP = 0;
 
-    // reset whenever pokemon changes
-    createEffect(() => {
-        setCurrentHP1(pokemon1().hp)
-        setCurrentHP2(pokemon2().hp)
-    })
-
     const move1Memo = createMemo(() => selectedMoveObject.left.url)
     const move2Memo = createMemo(() => selectedMoveObject.right.url)
 
     // move data
     const [move1Data] = createResource(move1Memo, getMove);
     const [move2Data] = createResource(move2Memo, getMove);
+
+    // reset whenever pokemon changes
+    createEffect(on([pokemon1, pokemon2, move1Memo, move2Memo], () => {
+        setCurrentHP1(pokemon1().hp)
+        setCurrentHP2(pokemon2().hp)
+    }))
 
     // each round uses the speed stat to "charge" the attack, so the pokemon can perform the attack
     // once the attack is done the speed stat is exhausted and the pokemon must wait until it is charged again
@@ -72,18 +72,16 @@ export const BattleTimeline = (props: BattleProps) => {
     }
 
     const doPokemon1Attack = () => {
-        const movePower = move1Data()!.power;
-        console.log('move 1 ', move1Data.name, movePower)
-        const damage = Math.round((pokemon1().attack/pokemon2().defense) * 5);
+        const movePower = move1Data()!.power / 12;
+        const damage = Math.round((pokemon1().attack/pokemon2().defense) * movePower);
         setCurrentHP2(currentHP2() - damage);
         console.log(`${pokemon1().name} attacks ${pokemon2().name} for ${damage} damage!`)
         console.log(`${pokemon2().name} has ${currentHP2()}/${pokemon2().hp} HP left`)
     }
 
     const doPokemon2Attack = () => {
-        const movePower = move2Data()!.power;
-        console.log('move 2 ', move2Data.name, movePower)
-        const damage = Math.round((pokemon2().attack/pokemon1().defense) * 5);
+        const movePower = move2Data()!.power / 12;
+        const damage = Math.round((pokemon2().attack/pokemon1().defense) * movePower);
         setCurrentHP1(currentHP1() - damage);
         console.log(`${pokemon2().name} attacks ${pokemon1().name} for ${damage} damage!`)
         console.log(`${pokemon1().name} has ${currentHP1()}/${pokemon1().hp} HP left`)

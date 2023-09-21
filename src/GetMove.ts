@@ -12,11 +12,14 @@ export async function getMove(url: string) {
         url
     );
     const result = await response.json();
-    const ret: MoveItem = {
+    let ret: MoveItem = {
         name: result.name,
         power: result.power
     }
-
+    if (result.power === null) {
+        alert(`${result.name} is a non-damaging move`);
+        ret.power = 0;
+    }
     console.log('move: ', ret);
     return ret;
 }
