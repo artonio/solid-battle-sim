@@ -38,7 +38,6 @@ export const BattleTimeline = (props: BattleProps) => {
     // const [move1Data] = createResource(move1Memo, getMove);
     // const [move2Data] = createResource(move2Memo, getMove);
 
-
     const [pokemon1history, setPokemon1History] = createStore<string[]>([])
     const [pokemon2history, setPokemon2History] = createStore<string[]>([])
 
@@ -46,6 +45,8 @@ export const BattleTimeline = (props: BattleProps) => {
     createEffect(on([pokemon1, pokemon2, move1Memo, move2Memo], () => {
         setCurrentHP1(pokemon1().hp)
         setCurrentHP2(pokemon2().hp)
+        setPokemon1History([])
+        setPokemon2History([])
     }))
 
     // each round uses the speed stat to "charge" the attack, so the pokemon can perform the attack
