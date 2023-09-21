@@ -1,11 +1,7 @@
 import {PokemonItem} from "./App";
-import {createEffect, createMemo, createResource, createSignal, For, on, onMount} from "solid-js";
+import {createEffect, createResource, createSignal, For, on, onMount} from "solid-js";
 import {Select} from "tw-elements";
-import {
-    findKeyInObjectById,
-    selectedMoveObject,
-    setSelectedMoveObject
-} from "./solid-store";
+import {findKeyInObjectById, selectedMoveObject, setSelectedMoveObject} from "./solid-store";
 import {getMove} from "./GetMove";
 
 export type PokemonCardProps = {
@@ -33,7 +29,6 @@ export const PokemonCard = (props: PokemonCardProps) => {
             const key = findKeyInObjectById(selectedMoveObject, props.id) as 'left' | 'right';
             setSelectedMoveObject(key, 'power', move()!.power)
         }
-
     }))
 
 
