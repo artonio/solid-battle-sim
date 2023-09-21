@@ -23,9 +23,9 @@ export const BattleTimeline = (props: BattleProps) => {
     // current HP
     const [currentHP1, setCurrentHP1] = createSignal(pokemon1().hp);
     const [currentHP2, setCurrentHP2] = createSignal(pokemon2().hp);
-    // init cumulative HP
+    // init cumulative speed
     let pokemon1CumulativeSpeed = 0;
-    let pokemon2CumulativeHP = 0;
+    let pokemon2CumulativeSpeed = 0;
 
     const move1Memo = createMemo(() => selectedMoveObject.left.url)
     const move2Memo = createMemo(() => selectedMoveObject.right.url)
@@ -45,15 +45,15 @@ export const BattleTimeline = (props: BattleProps) => {
     const doRound = () => {
         // Increase the cumulative speed for each Pokémon
         pokemon1CumulativeSpeed += pokemon1().hp;
-        pokemon2CumulativeHP += pokemon2().hp;
+        pokemon2CumulativeSpeed += pokemon2().hp;
         // Determine who attacks based on cumulative speed
         if (pokemon1CumulativeSpeed >= pokemon2().speed) {
             doPokemon1Attack()
             pokemon1CumulativeSpeed -= pokemon2().speed
         }
-        if (pokemon2CumulativeHP >= pokemon1().speed) {
+        if (pokemon2CumulativeSpeed >= pokemon1().speed) {
             doPokemon2Attack()
-            pokemon2CumulativeHP -= pokemon1().speed
+            pokemon2CumulativeSpeed -= pokemon1().speed
         }
 
         if (currentHP1() <= 0) {
