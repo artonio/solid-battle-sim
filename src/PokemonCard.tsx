@@ -1,11 +1,12 @@
 import {PokemonItem} from "./App";
-import {createSignal, For, onMount} from "solid-js";
+import {createEffect, createMemo, createResource, createSignal, For, on, onMount} from "solid-js";
 import {Select} from "tw-elements";
 import {
-    findKeyInObjectBydId,
+    findKeyInObjectById,
     selectedMoveObject,
     setSelectedMoveObject
 } from "./solid-store";
+import {getMove} from "./GetMove";
 
 export type PokemonCardProps = {
     data: PokemonItem,
@@ -22,13 +23,25 @@ export const PokemonCard = (props: PokemonCardProps) => {
         const select = new Select(document.getElementById(id()));
     });
 
+    const [moveUrl, setMoveUrl] = createSignal('')
+
+    const [move] = createResource(moveUrl, getMove);
+
+
+    createEffect(on([move], () => {
+        if (move()) {
+            const key = findKeyInObjectById(selectedMoveObject, props.id) as 'left' | 'right';
+            setSelectedMoveObject(key, 'power', move()!.power)
+        }
+
+    }))
 
 
     const onMoveChange = (e: any) => {
         console.log('onMoveChange: ', e.currentTarget.value)
 
-        const key = findKeyInObjectBydId(selectedMoveObject, props.id) as 'left' | 'right';
-
+        const key = findKeyInObjectById(selectedMoveObject, props.id) as 'left' | 'right';
+        setMoveUrl(e.currentTarget.value);
         setSelectedMoveObject(key, 'url', e.currentTarget.value)
 
         console.log('selectedMoveObject', selectedMoveObject)
@@ -66,6 +79,9 @@ export const PokemonCard = (props: PokemonCardProps) => {
                         item => <option value={item.url}>{item.name}</option>
                     }</For>
                 </select>
+            </div>
+            <div class="relative left-[10px] top-[10px]">
+                Move Power Rating: {move.latest ? move()!.power : 0}
             </div>
             <div class="p-3">
                 <div class="w-full bg-neutral-200 dark:bg-neutral-600">

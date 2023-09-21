@@ -10,6 +10,9 @@ export type BattleProps = {
     pokemon2: PokemonItem,
 }
 
+
+
+
 export const BattleTimeline = (props: BattleProps) => {
 
     onMount(() => {
@@ -30,10 +33,11 @@ export const BattleTimeline = (props: BattleProps) => {
 
     const move1Memo = createMemo(() => selectedMoveObject.left.url)
     const move2Memo = createMemo(() => selectedMoveObject.right.url)
+    //
+    // // move data
+    // const [move1Data] = createResource(move1Memo, getMove);
+    // const [move2Data] = createResource(move2Memo, getMove);
 
-    // move data
-    const [move1Data] = createResource(move1Memo, getMove);
-    const [move2Data] = createResource(move2Memo, getMove);
 
     const [pokemon1history, setPokemon1History] = createStore<string[]>([])
     const [pokemon2history, setPokemon2History] = createStore<string[]>([])
@@ -72,14 +76,16 @@ export const BattleTimeline = (props: BattleProps) => {
     }
 
     const doBattle = () => {
-        console.log('doBattle', currentHP1(), currentHP2(), move1Data()!.power, move2Data()!.power)
+        // console.log('doBattle', currentHP1(), currentHP2(), move1Data()!.power, move2Data()!.power)
+        console.log('doBattle', currentHP1(), currentHP2(), selectedMoveObject.left.power, selectedMoveObject.right.power)
         while (currentHP1() > 0 && currentHP2() > 0) {
             doRound()
         }
     }
 
     const doPokemon1Attack = () => {
-        const movePower = move1Data()!.power / 12;
+        // const movePower = move1Data()!.power / 12;
+        const movePower = selectedMoveObject.left.power / 12;
         const damage = Math.round((pokemon1().attack/pokemon2().defense) * movePower);
         setCurrentHP2(currentHP2() - damage);
         setPokemon1History((arg) => {
@@ -92,7 +98,7 @@ export const BattleTimeline = (props: BattleProps) => {
     }
 
     const doPokemon2Attack = () => {
-        const movePower = move2Data()!.power / 12;
+        const movePower = selectedMoveObject.right.power / 12;
         const damage = Math.round((pokemon2().attack/pokemon1().defense) * movePower);
         setCurrentHP1(currentHP1() - damage);
         setPokemon2History((arg) => {
