@@ -67,15 +67,14 @@ function App() {
                         <PokemonCard data={rightPokemon()!} id={selectedMoveObject.right.id}/>
                     </Show>
                 </div>
+
             </div>
             <div>
                 <Show when={leftPokemon.latest && rightPokemon.latest} fallback={<>Select Pokemon to battle...</>}>
                     <BattleTimeline pokemon1={leftPokemon()!} pokemon2={rightPokemon()!}/>
                 </Show>
             </div>
-            {/*selectedMoveLeft: {selectedMoveObject.left.url}*/}
-            {/*<br></br>*/}
-            {/*selectedMoveRight: {selectedMoveObject.right.url}*/}
+
         </div>
   );
 }
