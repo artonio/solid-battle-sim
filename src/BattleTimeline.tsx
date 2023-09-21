@@ -1,5 +1,5 @@
 import {MoveItem, PokemonItem} from "./App";
-import {createEffect, createResource, createSignal, onMount} from "solid-js";
+import {createEffect, createMemo, createResource, createSignal, onMount} from "solid-js";
 import {destructure} from "@solid-primitives/destructure";
 import {getMove} from "./GetMove";
 import {selectedMoveObject} from "./solid-store";
@@ -33,9 +33,12 @@ export const BattleTimeline = (props: BattleProps) => {
         setCurrentHP2(pokemon2().hp)
     })
 
+    const move1Memo = createMemo(() => selectedMoveObject.left.url)
+    const move2Memo = createMemo(() => selectedMoveObject.right.url)
+
     // move data
-    const [move1Data] = createResource(selectedMoveObject.left.url, getMove);
-    const [move2Data] = createResource(selectedMoveObject.right.url, getMove);
+    const [move1Data] = createResource(move1Memo, getMove);
+    const [move2Data] = createResource(move2Memo, getMove);
 
     // each round uses the speed stat to "charge" the attack, so the pokemon can perform the attack
     // once the attack is done the speed stat is exhausted and the pokemon must wait until it is charged again
