@@ -1,7 +1,7 @@
 import {PokemonItem} from "./App";
-import {createEffect, createResource, createSignal, For, on, onMount} from "solid-js";
+import {createEffect, createMemo, createResource, createSignal, For, on, onMount} from "solid-js";
 import {Select} from "tw-elements";
-import {findKeyInObjectById, selectedMoveObject, setSelectedMoveObject} from "./solid-store";
+import {findKeyInObjectById, selectedPokemonMetadata, setSelectedPokemonMetadata} from "./solid-store";
 import {getMove} from "./GetMove";
 
 export type PokemonCardProps = {
@@ -15,19 +15,35 @@ export const PokemonCard = (props: PokemonCardProps) => {
 
     const [val] = createSignal('')
 
+    const currentPokemonHp = createMemo(() => {
+        const key = findKeyInObjectById(selectedPokemonMetadata, props.id) as 'left' | 'right';
+        return selectedPokemonMetadata[key].hp;
+    })
+
+    // derived signal
+    const hpWidth = () => {
+        if (currentPokemonHp() <= 0) {
+            // return 'width: 0%' //width 0% still prints a small line of green
+            return 'color: red; background-color: rgb(229 229 229 / var(--tw-bg-opacity));'
+        }
+
+        return `width: ${currentPokemonHp() / props.data.hp * 100}%`
+    }
+
     onMount(() => {
         const select = new Select(document.getElementById(id()));
+        const key = findKeyInObjectById(selectedPokemonMetadata, props.id) as 'left' | 'right';
+        setSelectedPokemonMetadata(key, 'hp', props.data.hp);
     });
 
     const [moveUrl, setMoveUrl] = createSignal('')
 
     const [move] = createResource(moveUrl, getMove);
 
-
     createEffect(on([move], () => {
         if (move()) {
-            const key = findKeyInObjectById(selectedMoveObject, props.id) as 'left' | 'right';
-            setSelectedMoveObject(key, 'power', move()!.power)
+            const key = findKeyInObjectById(selectedPokemonMetadata, props.id) as 'left' | 'right';
+            setSelectedPokemonMetadata(key, 'power', move()!.power)
         }
     }))
 
@@ -35,11 +51,11 @@ export const PokemonCard = (props: PokemonCardProps) => {
     const onMoveChange = (e: any) => {
         console.log('onMoveChange: ', e.currentTarget.value)
 
-        const key = findKeyInObjectById(selectedMoveObject, props.id) as 'left' | 'right';
+        const key = findKeyInObjectById(selectedPokemonMetadata, props.id) as 'left' | 'right';
         setMoveUrl(e.currentTarget.value);
-        setSelectedMoveObject(key, 'url', e.currentTarget.value)
+        setSelectedPokemonMetadata(key, 'url', e.currentTarget.value)
 
-        console.log('selectedMoveObject', selectedMoveObject)
+        console.log('selectedMoveObject', selectedPokemonMetadata)
     }
 
     return (
@@ -81,9 +97,9 @@ export const PokemonCard = (props: PokemonCardProps) => {
             <div class="p-3">
                 <div class="w-full bg-neutral-200 dark:bg-neutral-600">
                     <div
-                        class="bg-green-500 p-0.5 text-center text-xs font-medium leading-none text-primary-100"
-                        style="width: 100%">
-                        {props.data.hp}/{props.data.hp}
+                        class="bg-green-500 p-0.5 text-center text-xs font-medium leading-none text-black"
+                        style={hpWidth()}>
+                        {currentPokemonHp()}/{props.data.hp}
                     </div>
                 </div>
             </div>
