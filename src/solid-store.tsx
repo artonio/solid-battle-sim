@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 // store with custom object with unique keys
-export const [selectedMoveObject, setSelectedMoveObject] = createStore({
+export const [selectedPokemonMetadata, setSelectedPokemonMetadata] = createStore({
     left: {id: uuidv4(), url: "", power: 0, hp: 0},
     right: {id: uuidv4(), url: "", power: 0, hp: 0},
 });

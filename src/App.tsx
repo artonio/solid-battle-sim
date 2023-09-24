@@ -5,8 +5,7 @@ import {getPokemon} from "./GetPokemon";
 import {PokemonCard} from "./PokemonCard";
 import {PokemonSelect} from "./PokemonSelect";
 import {BattleTimeline} from "./BattleTimeline";
-import {selectedMoveObject} from "./solid-store";
-
+import {selectedPokemonMetadata} from "./solid-store";
 
 // Result from get all Pokemon
 export type ResultItem = {
@@ -47,24 +46,20 @@ function App() {
   const [leftPokemon] = createResource(selectedLeft, getPokemon);
   const [rightPokemon] = createResource(selectedRight, getPokemon);
 
-  // get a move
-  // const [move, setMove] = createSignal('');
-  // const [dataMove] = createResource(move, getMove);
-
     return (
         <div class={styles.App}>
             <div class={styles.mainCenter}>
                 <div class={styles.left}>
                     <PokemonSelect data={data} signal={selectedLeft} signalSetter={setSelectedLeft}/>
                     <Show when={leftPokemon.latest} fallback={<>Loading...</>}>
-                        <PokemonCard data={leftPokemon()!} id={selectedMoveObject.left.id}/>
+                        <PokemonCard data={leftPokemon()!} id={selectedPokemonMetadata.left.id}/>
                     </Show>
 
                 </div>
                 <div class={styles.right}>
                     <PokemonSelect data={data} signal={selectedRight} signalSetter={setSelectedRight}/>
                     <Show when={rightPokemon.latest} fallback={<>Loading...</>}>
-                        <PokemonCard data={rightPokemon()!} id={selectedMoveObject.right.id}/>
+                        <PokemonCard data={rightPokemon()!} id={selectedPokemonMetadata.right.id}/>
                     </Show>
                 </div>
 
@@ -74,8 +69,6 @@ function App() {
                     <BattleTimeline
                         pokemon1={leftPokemon()!}
                         pokemon2={rightPokemon()!}
-                        leftId={selectedMoveObject.left.id}
-                        rightId={selectedMoveObject.right.id}
                     />
                 </Show>
             </div>

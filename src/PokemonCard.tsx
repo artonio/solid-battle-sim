@@ -1,7 +1,7 @@
 import {PokemonItem} from "./App";
 import {createEffect, createMemo, createResource, createSignal, For, on, onMount} from "solid-js";
 import {Select} from "tw-elements";
-import {findKeyInObjectById, selectedMoveObject, setSelectedMoveObject} from "./solid-store";
+import {findKeyInObjectById, selectedPokemonMetadata, setSelectedPokemonMetadata} from "./solid-store";
 import {getMove} from "./GetMove";
 
 export type PokemonCardProps = {
@@ -16,8 +16,8 @@ export const PokemonCard = (props: PokemonCardProps) => {
     const [val] = createSignal('')
 
     const currentPokemonHp = createMemo(() => {
-        const key = findKeyInObjectById(selectedMoveObject, props.id) as 'left' | 'right';
-        return selectedMoveObject[key].hp;
+        const key = findKeyInObjectById(selectedPokemonMetadata, props.id) as 'left' | 'right';
+        return selectedPokemonMetadata[key].hp;
     })
 
     // derived signal
@@ -31,8 +31,8 @@ export const PokemonCard = (props: PokemonCardProps) => {
 
     onMount(() => {
         const select = new Select(document.getElementById(id()));
-        const key = findKeyInObjectById(selectedMoveObject, props.id) as 'left' | 'right';
-        setSelectedMoveObject(key, 'hp', props.data.hp);
+        const key = findKeyInObjectById(selectedPokemonMetadata, props.id) as 'left' | 'right';
+        setSelectedPokemonMetadata(key, 'hp', props.data.hp);
     });
 
     const [moveUrl, setMoveUrl] = createSignal('')
@@ -41,8 +41,8 @@ export const PokemonCard = (props: PokemonCardProps) => {
 
     createEffect(on([move], () => {
         if (move()) {
-            const key = findKeyInObjectById(selectedMoveObject, props.id) as 'left' | 'right';
-            setSelectedMoveObject(key, 'power', move()!.power)
+            const key = findKeyInObjectById(selectedPokemonMetadata, props.id) as 'left' | 'right';
+            setSelectedPokemonMetadata(key, 'power', move()!.power)
         }
     }))
 
@@ -50,11 +50,11 @@ export const PokemonCard = (props: PokemonCardProps) => {
     const onMoveChange = (e: any) => {
         console.log('onMoveChange: ', e.currentTarget.value)
 
-        const key = findKeyInObjectById(selectedMoveObject, props.id) as 'left' | 'right';
+        const key = findKeyInObjectById(selectedPokemonMetadata, props.id) as 'left' | 'right';
         setMoveUrl(e.currentTarget.value);
-        setSelectedMoveObject(key, 'url', e.currentTarget.value)
+        setSelectedPokemonMetadata(key, 'url', e.currentTarget.value)
 
-        console.log('selectedMoveObject', selectedMoveObject)
+        console.log('selectedMoveObject', selectedPokemonMetadata)
     }
 
     return (
