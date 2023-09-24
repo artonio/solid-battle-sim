@@ -11,10 +11,6 @@ export type BattleProps = {
 
 export const BattleTimeline = (props: BattleProps) => {
 
-    onMount(() => {
-
-    });
-
     const {
         pokemon1,
         pokemon2,
