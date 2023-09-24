@@ -23,7 +23,8 @@ export const PokemonCard = (props: PokemonCardProps) => {
     // derived signal
     const hpWidth = () => {
         if (currentPokemonHp() <= 0) {
-            return 'width: 0%'
+            // return 'width: 0%' //width 0% still prints a small line of green
+            return 'color: red; background-color: rgb(229 229 229 / var(--tw-bg-opacity));'
         }
 
         return `width: ${currentPokemonHp() / props.data.hp * 100}%`

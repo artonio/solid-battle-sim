@@ -71,7 +71,11 @@ export const BattleTimeline = (props: BattleProps) => {
     const doPokemon1Attack = () => {
         const movePower = selectedPokemonMetadata.left.power / 12;
         const damage = Math.round((pokemon1().attack/pokemon2().defense) * movePower);
-        setSelectedPokemonMetadata('left', 'hp', selectedPokemonMetadata.left.hp - damage)
+        let remainingHP = selectedPokemonMetadata.right.hp - damage;
+        if (remainingHP < 0) {
+            remainingHP = 0;
+        }
+        setSelectedPokemonMetadata('right', 'hp', remainingHP)
         setPokemon1History((arg) => {
             const newArr = arg.slice();
             newArr.push(`${pokemon1().name} attacks ${pokemon2().name} for ${damage} damage!`)
@@ -84,7 +88,11 @@ export const BattleTimeline = (props: BattleProps) => {
     const doPokemon2Attack = () => {
         const movePower = selectedPokemonMetadata.right.power / 12;
         const damage = Math.round((pokemon2().attack/pokemon1().defense) * movePower);
-        setSelectedPokemonMetadata('right', 'hp', selectedPokemonMetadata.right.hp - damage)
+        let remainingHP = selectedPokemonMetadata.left.hp - damage;
+        if (remainingHP < 0) {
+            remainingHP = 0;
+        }
+        setSelectedPokemonMetadata('left', 'hp', remainingHP)
         setPokemon2History((arg) => {
             const newArr = arg.slice();
             newArr.push(`${pokemon2().name} attacks ${pokemon1().name} for ${damage} damage!`)
